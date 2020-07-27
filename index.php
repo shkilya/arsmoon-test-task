@@ -1,10 +1,19 @@
 <?php
 
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+
 require __DIR__.'/vendor/autoload.php';
 
+use App\Model\CallRecord;
+use App\Model\CallRecordObjectConverter;
 use App\Model\ParserFactory;
 use App\Model\Parsers\CsvParser;
 use App\Model\ReaderFactory;
+use App\Model\ResultConverter\CustomerResult;
+use App\Model\ResultDataConverter;
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -30,11 +39,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
         $parser->parse($fileContext->getContent());
 
-        var_dump($parser->getData());
+        $callRecords = (new CallRecordObjectConverter($parser->getData()))->convertToCallRecordObject();
+
+        /** @var CustomerResult[] $customerResults */
+        $customerResults = (new ResultDataConverter(...$callRecords))->getCustomerResults();
+
+        $html = '';
+
+        $html .='<table>';
+        foreach ($customerResults as $customerResult){
+            $html .='<tr>';
+            $html .='<td>'.$customerResult->getCustomerId().'</td>';
+            $html .='<td>'.$customerResult->getNumberOfCallsWithinTheSameContinent().'</td>';
+            $html .='<td>'.$customerResult->getTotalDurationOfCallsWithinTheSameContinent().'</td>';
+            $html .='<td>'.$customerResult->getTotalNumberOfAllCalls().'</td>';
+            $html .='<td>'.$customerResult->getTotalNumberOfAllCalls().'</td>';
+            $html .='</tr>';
+        }
+        $html .='</table>';
+        echo $html;
+        die;
     }
-
-
-    die;
 }else{
 
     echo '

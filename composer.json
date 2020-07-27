@@ -6,7 +6,10 @@
             "email": "shkilya1994@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "guzzlehttp/guzzle": "^7.0",
+        "jms/serializer": "^3.8"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "src/"
