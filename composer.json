@@ -1,0 +1,15 @@
+{
+    "name": "shkilya/arsmoon-test",
+    "authors": [
+        {
+            "name": "shkilya",
+            "email": "shkilya1994@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }        
+    }
+}
